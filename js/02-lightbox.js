@@ -4,21 +4,24 @@ import { galleryItems } from './gallery-items.js';
 
 const galleryBoxEl = document.querySelector('.gallery');
 
-galleryItems.forEach(element => {
+const createGallaryMarkup = createGalleryItem(galleryItems);
 
-     galleryBoxEl.insertAdjacentHTML('beforeend', 
-    `<a class="gallery__item" href="${element.original}">
-    <img class="gallery__image" src="${element.preview}" alt="${element.description}" />
-  </a>`)
-    
-});
+function createGalleryItem (item) {
+  return item.map(({original, preview, description}) => {
+    return  `<a class="gallery__item" href="${original}">
+    <img class="gallery__image" src="${preview}" alt="${description}" />
+  </a>`
+  }).join('')
+}
+
+galleryBoxEl.insertAdjacentHTML('beforeend', createGallaryMarkup);
 
 galleryBoxEl.addEventListener('click', onOpenModalImg);
 
 function onOpenModalImg(event) {
     event.preventDefault();
         
-    let gallery = new SimpleLightbox('.gallery a', {
+    let gallery = new SimpleLightbox('.gallery .gallery__item', {
         
         captionDelay: 250,
         captionSelector: 'img',
